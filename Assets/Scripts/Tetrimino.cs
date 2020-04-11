@@ -4,17 +4,25 @@ using UnityEngine;
 //테트리미노 코드
 public class Tetrimino : MonoBehaviour
 {
-    [SerializeField] private TetriminoType tetriminoType;
-    [SerializeField] private GameObject tetriminoSelectedType = null;
-    [SerializeField] private GameObject [] tetriminoSample;
+    [SerializeField] private TetriminoType tetriminoType;  
+    [SerializeField] private GameObject [] tetriminoGroup;    
+    [SerializeField] private int[,] batch;
+    [SerializeField] private float batchGap = 0.7f;
+    [SerializeField] private int[,,] baseBatch;
 
 
+    private void Awake() {
+        BaseBatchSet();
+        batch = new int[4, 4];
+    }
 
     void Start()
-    {
-        int selected = Random.Range(1, 8);
-        tetriminoType = RandomSelect(selected);
-        tetriminoSelectedType = tetriminoSample[selected - 1];
+    {        
+        int selected = Random.Range(0, 7);
+        tetriminoType = RandomSelect(selected+1);
+        //tetriminoSelectedType = tetriminoSample[selected - 1];
+        BatchTetrimino(selected);
+
     }
 
     // Update is called once per frame
@@ -69,7 +77,15 @@ public class Tetrimino : MonoBehaviour
                 return TetriminoType.T_mino;
         }
     }
+    private void BatchTetrimino(int tetriminoType) {
 
+        for (int i = 0; i < 4; i++) {
+            tetriminoGroup[i].transform.position = new Vector2(baseBatch[tetriminoType,i,0] * batchGap, baseBatch[tetriminoType, i, 1] * batchGap);
+
+        }
+    }
+    private void BaseBatchSet() =>
+        baseBatch = new int[,,] { { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } }, { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 2, 1 } }, { { 3, 0 }, { 3, 1 }, { 2, 1 }, { 1, 1 } }, { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 2 } }, { { 1, 0 }, { 1, 1 }, { 0, 1 }, { 0, 2 } }, { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 } }, { { 0, 0 }, { 0, 1 }, { 0 , 2 }, { 1, 1 } } };
 }
 
 enum TetriminoType
