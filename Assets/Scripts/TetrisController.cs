@@ -31,4 +31,7 @@ public class TetrisController : MonoBehaviour
             }
         }
     }
+    public Tetrimino Tetrimino { get { return tetrimino; } set { tetrimino = value; } }
+
+
 }

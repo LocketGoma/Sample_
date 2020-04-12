@@ -7,6 +7,7 @@ public class Tetrimino : MonoBehaviour
     [SerializeField] private TetriminoType tetriminoType;  
     [SerializeField] private GameObject [] tetriminoGroup;    
     [SerializeField] private int[,] batch;
+    [SerializeField] private int[,] gridPosition;
     [SerializeField] private float batchGap = 0.7f;
     [SerializeField] private int[,,] baseBatch;
 
@@ -14,6 +15,7 @@ public class Tetrimino : MonoBehaviour
     private void Awake() {
         BaseBatchSet();
         batch = new int[4, 4];
+        gridPosition = new int[4, 2];
     }
 
     void Start()
@@ -22,37 +24,52 @@ public class Tetrimino : MonoBehaviour
         tetriminoType = RandomSelect(selected+1);
         //tetriminoSelectedType = tetriminoSample[selected - 1];
         BatchTetrimino(selected);
+    }
+    private IEnumerator MoveDownTetrimino() {
+        while (true) {
+            Debug.Log("Y : " + transform.position.y);
+            yield return new WaitForSeconds(1);
+            transform.position = new Vector2(transform.position.x, transform.position.y - 1);
+
+            if (transform.position.y <= 0) {
+                Debug.Log("End");
+                yield break;
+            }
+        }
+    }
+    public void CanMove() {
+        StartCoroutine(MoveDownTetrimino());
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+    //배열 회전 공식 => a[i][j] -> a[j][N - 1 - i];
 
     //시계방향 회전
+
     public void TurnCR()
     {
+        /*
+        for (int i = 0; i < 4; i++) {            
+            tetriminoGroup[i].transform.position = new Vector2(tetriminoGroup[i].transform.position.y, -tetriminoGroup[i].transform.position.x);
+        }
+        */
+        transform.Rotate(0, 0, -90);
+
 
     }
     //시계 반대방향 회전
     public void TurnCCR()
     {
-
-    }
+        /*
+        for (int i = 0; i < 4; i++) {
+            tetriminoGroup[i].transform.position = new Vector2(-tetriminoGroup[i].transform.position.y, tetriminoGroup[i].transform.position.x);
+        }
+        */
+    }    
     public void MoveXAxis(int side)
     {
-        //좌측 이동
-        if (side == -1)
-        {
-
-        }
-        //우측 이동
-        if (side == 1)
-        {
-
-        }
+         transform.position = (new Vector3(transform.position.x + (side * batchGap), transform.position.y, transform.position.z));
     }
 
     private TetriminoType RandomSelect(int selectKey)
@@ -80,7 +97,10 @@ public class Tetrimino : MonoBehaviour
     private void BatchTetrimino(int tetriminoType) {
 
         for (int i = 0; i < 4; i++) {
-            tetriminoGroup[i].transform.position = new Vector2(baseBatch[tetriminoType,i,0] * batchGap, baseBatch[tetriminoType, i, 1] * batchGap);
+//         gridPosition[i, 0] = (int)transform.position.x + baseBatch[tetriminoType, i, 0]; 
+//          gridPosition[i, 1] = (int)transform.position.y + baseBatch[tetriminoType, i, 1];
+
+            tetriminoGroup[i].transform.position = new Vector2(transform.position.x + baseBatch[tetriminoType,i,0] * batchGap, transform.position.y + baseBatch[tetriminoType, i, 1] * batchGap);
 
         }
     }
