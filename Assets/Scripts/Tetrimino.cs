@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tetrimino : MonoBehaviour
 {
     [SerializeField] private TetriminoType tetriminoType;  
-    [SerializeField] private GameObject [] tetriminoGroup;    
+    [SerializeField] private GameObject [] tetriminoGroup = null;    
     [SerializeField] private int[,] batch;
     [SerializeField] private int[,] gridPosition;
     [SerializeField] private float batchGap = 0.7f;
@@ -17,13 +17,11 @@ public class Tetrimino : MonoBehaviour
         batch = new int[4, 4];
         gridPosition = new int[4, 2];
     }
-
-    void Start()
-    {        
+    public void Initializer(float gap) {
         int selected = Random.Range(0, 7);
-        tetriminoType = RandomSelect(selected+1);
-        //tetriminoSelectedType = tetriminoSample[selected - 1];
+        tetriminoType = RandomSelect(selected + 1);
         BatchTetrimino(selected);
+        batchGap = gap;
     }
     private IEnumerator MoveDownTetrimino() {
         while (true) {
@@ -39,7 +37,6 @@ public class Tetrimino : MonoBehaviour
     }
     public void CanMove() {
         StartCoroutine(MoveDownTetrimino());
-
     }
 
 
