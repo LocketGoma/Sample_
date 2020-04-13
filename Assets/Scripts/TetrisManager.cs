@@ -115,9 +115,9 @@ public class TetrisManager : MonoBehaviour
             {
                 endOfMove = true;
             }
-            Debug.Log("now Check :" + v.x + "," + v.y);
+           // Debug.Log("now Check :" + v.x + "," + v.y);
         }
-        Debug.Log("-----------");
+       // Debug.Log("-----------");
     }
     public static Vector2 roundVec2(Vector2 v) {
         return new Vector2(Mathf.Round(v.x),

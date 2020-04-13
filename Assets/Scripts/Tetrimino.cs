@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 //테트리미노 코드
 public class Tetrimino : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Tetrimino : MonoBehaviour
         int selected = Random.Range(0, 7);
         tetriminoType = RandomSelect(selected + 1);
         BatchTetrimino(selected);
+        SetColor(tetriminoType);
         batchGap = gap;
     }
     private IEnumerator MoveDownTetrimino() {
@@ -43,6 +45,49 @@ public class Tetrimino : MonoBehaviour
         Debug.Log("stop");
         //StopCoroutine(MoveDownTetrimino());
         StopAllCoroutines();
+    }
+    private void SetColor(TetriminoType tetriminoType) {
+        Color color;
+        Debug.Log("type : " + tetriminoType);
+        switch (tetriminoType) {
+            case TetriminoType.I_mino: {
+                    color = new Color(100.0f / 255.0f, 100.0f / 255.0f, 250.0f / 255.0f);
+                    break;
+                }
+            case TetriminoType.LL_mino: {
+                    color = new Color(200.0f / 255.0f, 200.0f / 255.0f, 50.0f / 255.0f);
+                    break;
+                }
+            case TetriminoType.LR_mino: {
+                    color = new Color(250.0f / 255.0f, 100.0f / 255.0f, 100.0f / 255.0f);
+                    break;
+                }
+            case TetriminoType.ZL_mino: {
+                    color = new Color(200.0f / 255.0f, 200.0f / 255.0f, 200.0f / 255.0f);
+                    break;
+                }
+            case TetriminoType.ZR_mino: {
+                    color = new Color(50.0f / 255.0f, 200.0f / 255.0f, 50.0f / 255.0f);
+                    break;
+                }
+            case TetriminoType.O_mino: {
+                    color = new Color(50.0f / 255.0f, 50.0f / 255.0f, 150.0f / 255.0f);
+                    break;
+                }
+            case TetriminoType.T_mino: {
+                    color = new Color(200.0f / 255.0f, 50.0f / 255.0f, 200.0f / 255.0f);
+                    break;
+                }
+            default: {
+                    color = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
+                    break;
+                }
+        }
+        foreach (Transform child in transform) {
+            Debug.Log(child.gameObject.GetComponent<SpriteRenderer>().material.color);
+            child.gameObject.GetComponent<SpriteRenderer>().material.color = color;
+        }
+        Debug.Log("change color : " + color);
     }
 
 
