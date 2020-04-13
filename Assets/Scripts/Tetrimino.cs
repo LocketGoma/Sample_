@@ -25,7 +25,7 @@ public class Tetrimino : MonoBehaviour
     }
     private IEnumerator MoveDownTetrimino() {
         while (true) {
-            Debug.Log("Y : " + transform.position.y);
+           // Debug.Log("Y : " + transform.position.y);
             yield return new WaitForSeconds(1);
             transform.position = new Vector2(transform.position.x, transform.position.y - 1);
 
@@ -37,6 +37,12 @@ public class Tetrimino : MonoBehaviour
     }
     public void CanMove() {
         StartCoroutine(MoveDownTetrimino());
+    }
+    public void StopMove()
+    {
+        Debug.Log("stop");
+        //StopCoroutine(MoveDownTetrimino());
+        StopAllCoroutines();
     }
 
 
