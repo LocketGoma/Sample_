@@ -75,6 +75,26 @@ public class TetrisManager : MonoBehaviour
         UpdateData();
     }
 
+    //아래 -> 위
+    bool DelectRowChecker() {
+        bool detectCheck = true;
+        for (int i = 0; i < mapSize[1]; i++) {
+            for (int j = 0; j < mapSize[0]; j++) {
+                if (dataMatrix[i,j] == null) {
+                    detectCheck = false;
+                    break;
+                }
+            }
+            if (detectCheck == true) {
+                DeleteRow(i);
+                return true;
+            }
+            detectCheck = true;
+        }
+        return false;
+    }
+
+
     //여기서부터 다 새로 짤것.
 
     void DeleteRow(int y) {
@@ -119,10 +139,12 @@ public class TetrisManager : MonoBehaviour
         }
        // Debug.Log("-----------");
     }
+    //수치 반올림.
     public static Vector2 roundVec2(Vector2 v) {
         return new Vector2(Mathf.Round(v.x),
                            Mathf.Round(v.y));
     }
+
     //꽉 차서 게임 종료 되는 경우.
     bool CheckOverflow(Vector2 checker)
     {
