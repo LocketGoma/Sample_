@@ -49,7 +49,7 @@ public class TetrisManager : MonoBehaviour
             Debug.Log("Next");
             foreach (Transform child in nowTetrimino.transform)
             {
-                Vector2 v = roundVec2(child.position);          //없어질때마다 한번씩 null
+                Vector2 v = RoundVec2(child.position);          //없어질때마다 한번씩 null
                 dataMatrix[(int)v.x, (int)v.y].name = "Rock";
                 playState = CheckOverflow(v) == false;
             }
@@ -59,6 +59,7 @@ public class TetrisManager : MonoBehaviour
             {
                 nowTetrimino = nextTetrimino = Instantiate(baseTetrimino, new Vector2(0, 15), transform.rotation);
                 nowTetrimino.GetComponent<Tetrimino>().Initializer(batchGap);
+
                 //nowTetrimino = nextTetrimino;
                 //nowTetrimino.transform.position = new Vector2(0, 15);
                 //nextTetrimino = secondTetrimino;
@@ -141,7 +142,7 @@ public class TetrisManager : MonoBehaviour
                         dataMatrix[x, y] = null;
 
         foreach (Transform child in nowTetrimino.transform) {
-            Vector2 v = roundVec2(child.position);
+            Vector2 v = RoundVec2(child.position);
             dataMatrix[(int)v.x, (int)v.y] = child;
             if ((dataMatrix[(int)v.x, (int)v.y - 1] != null && dataMatrix[(int)v.x, (int)v.y - 1].name != child.name) || (int)v.y <= 1)
             {
@@ -151,11 +152,7 @@ public class TetrisManager : MonoBehaviour
         }
        // Debug.Log("-----------");
     }
-    //수치 반올림.
-    public static Vector2 roundVec2(Vector2 v) {
-        return new Vector2(Mathf.Round(v.x),
-                           Mathf.Round(v.y));
-    }
+
 
     //꽉 차서 게임 종료 되는 경우.
     bool CheckOverflow(Vector2 checker)
@@ -167,5 +164,24 @@ public class TetrisManager : MonoBehaviour
         }
     }
 
+    //보조 메소드 목록
+    //1) 수치 반올림.
+    public static Vector2 RoundVec2(Vector2 v) {
+        return new Vector2(Mathf.Round(v.x),
+                           Mathf.Round(v.y));
+    }
+    //2) 범위 안에 속해있는지 체크 1
+    private bool CheckInsideBorder(Vector2 v) {
+        return ((int)v.x >= 0 && (int)v.x < mapSize[0] && (int)v.y >= 0);
+    }
+    //3) 범위 안에 속해있는지 체크 2
+    public bool IsValidGridPos(Transform tetriminoTransform) {
+        foreach(Transform child in tetriminoTransform) {
+            Vector2 v = RoundVec2(child.position);
+
+        }
+
+        return true;
+    }
 
 }
