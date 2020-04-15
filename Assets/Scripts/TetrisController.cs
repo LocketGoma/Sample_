@@ -15,11 +15,11 @@ public class TetrisController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                tetrimino.TurnCR();
+                tetrimino.TurnTetrimino();
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                tetrimino.TurnCCR();
+                tetrimino.PushToBottom();
             }
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {

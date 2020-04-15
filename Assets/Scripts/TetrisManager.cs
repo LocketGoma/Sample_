@@ -5,7 +5,7 @@ using UnityEngine;
 public class TetrisManager : MonoBehaviour
 {
     [Header("블럭 배치표")]
-    [SerializeField] private Transform[,] dataMatrix;
+    [SerializeField] private static Transform[,] dataMatrix;
     private int[,] nowPosArray;
     [Header("테트리미노 배치/사용")]
     [SerializeField] private GameObject baseTetrimino = null;
@@ -16,7 +16,7 @@ public class TetrisManager : MonoBehaviour
     [Header("자체 변수")]
     [Range(0.0f, 1.0f)]
     [SerializeField] private float batchGap = 0.7f;
-    [SerializeField] private int[] mapSize = { 9, 20 };
+    [SerializeField] private static int[] mapSize = { 9, 20 };
     [SerializeField] private int[] batchPosition = { 5, 15 };
 
     [Header("조작 컨트롤러")]
@@ -171,16 +171,21 @@ public class TetrisManager : MonoBehaviour
                            Mathf.Round(v.y));
     }
     //2) 범위 안에 속해있는지 체크 1
-    private bool CheckInsideBorder(Vector2 v) {
+    private static bool CheckInsideBorder(Vector2 v) {
         return ((int)v.x >= 0 && (int)v.x < mapSize[0] && (int)v.y >= 0);
     }
     //3) 범위 안에 속해있는지 체크 2
-    public bool IsValidGridPos(Transform tetriminoTransform) {
+    public static bool IsValidGridPos(Transform tetriminoTransform) {
         foreach(Transform child in tetriminoTransform) {
             Vector2 v = RoundVec2(child.position);
 
+            if (CheckInsideBorder(v) == false) {
+                return false;
+            }
+            if (dataMatrix[(int)v.x, (int)v.y - 1] != null && dataMatrix[(int)v.x, (int)v.y - 1].parent != tetriminoTransform) {
+                return false;
+            }
         }
-
         return true;
     }
 

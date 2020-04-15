@@ -95,7 +95,7 @@ public class Tetrimino : MonoBehaviour
 
     //시계방향 회전
 
-    public void TurnCR()
+    public void TurnTetrimino()
     {
         /*
         for (int i = 0; i < 4; i++) {            
@@ -103,21 +103,28 @@ public class Tetrimino : MonoBehaviour
         }
         */
         transform.Rotate(0, 0, -90);
+        if (TetrisManager.IsValidGridPos(transform) == false) {
+            transform.Rotate(0, 0, 180);
+            if (TetrisManager.IsValidGridPos(transform) == false){
+                transform.Rotate(0, 0, -90);
+            }
+            Debug.Log("fail to rotate Tetrimino");
+        }
 
 
     }
-    //시계 반대방향 회전
-    public void TurnCCR()
+    //좌우 이동
+    public void MoveXAxis(int side) 
     {
-        /*
-        for (int i = 0; i < 4; i++) {
-            tetriminoGroup[i].transform.position = new Vector2(-tetriminoGroup[i].transform.position.y, tetriminoGroup[i].transform.position.x);
+        transform.position += new Vector3((side * batchGap), 0, 0);
+        if (TetrisManager.IsValidGridPos(transform) == false) {
+            transform.position -= new Vector3((side * batchGap), 0, 0);
         }
-        */
-    }    
-    public void MoveXAxis(int side)
-    {
-         transform.position = (new Vector3(transform.position.x + (side * batchGap), transform.position.y, transform.position.z));
+        Debug.Log("Out of Range");
+    }
+    //아래 이동
+    public void PushToBottom() {
+        transform.position += new Vector3(0,(-1 * batchGap), 0);
     }
 
     private TetriminoType RandomSelect(int selectKey)
