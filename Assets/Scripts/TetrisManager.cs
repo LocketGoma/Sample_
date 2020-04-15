@@ -49,7 +49,7 @@ public class TetrisManager : MonoBehaviour
             Debug.Log("Next");
             foreach (Transform child in nowTetrimino.transform)
             {
-                Vector2 v = roundVec2(child.position);
+                Vector2 v = roundVec2(child.position);          //없어질때마다 한번씩 null
                 dataMatrix[(int)v.x, (int)v.y].name = "Rock";
                 playState = CheckOverflow(v) == false;
             }
@@ -71,6 +71,10 @@ public class TetrisManager : MonoBehaviour
 
                 endOfMove = false;
             }
+
+            while (DelectRowChecker() == true)
+                ;
+
         }
         UpdateData();
     }
@@ -80,7 +84,7 @@ public class TetrisManager : MonoBehaviour
         bool detectCheck = true;
         for (int i = 0; i < mapSize[1]; i++) {
             for (int j = 0; j < mapSize[0]; j++) {
-                if (dataMatrix[i,j] == null) {
+                if (dataMatrix[j,i] == null) {
                     detectCheck = false;
                     break;
                 }
@@ -102,17 +106,25 @@ public class TetrisManager : MonoBehaviour
             Destroy(dataMatrix[x, y].gameObject);
             dataMatrix[x, y] = null;
         }
+        Debug.Log("줄 삭제 체크 : " + y);
+
         DecreaseRow(y + 1);
     }
     void DecreaseRow(int y) {
+        Debug.Log("줄 감소 체크 : "+y);
         bool transCheck = false;
         if (y == mapSize[1]) {
             return;
         }
         for (int x = 0; x < mapSize[0]; x++) {
-            if (dataMatrix[x, y] != null) {
+            if (dataMatrix[x, y] == null) {
+                ;
+            }
+            else if (dataMatrix[x, y] != null) {
                 dataMatrix[x, y - 1] = dataMatrix[x, y];
                 dataMatrix[x, y] = null;
+
+                dataMatrix[x, y - 1].position += new Vector3(0, -1, 0);
 
                 transCheck = true;
             }
