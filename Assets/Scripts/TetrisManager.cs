@@ -25,7 +25,6 @@ public class TetrisManager : MonoBehaviour
     [SerializeField] private bool playState = true;
 
 
-
     private void Start() {
         dataMatrix = new Transform[mapSize[0], mapSize[1]];
         //nowPosArray = new int[4, 2];
@@ -107,12 +106,11 @@ public class TetrisManager : MonoBehaviour
             Destroy(dataMatrix[x, y].gameObject);
             dataMatrix[x, y] = null;
         }
-        Debug.Log("줄 삭제 체크 : " + y);
-
+        //Debug.Log("줄 삭제 체크 : " + y);
         DecreaseRow(y + 1);
     }
     void DecreaseRow(int y) {
-        Debug.Log("줄 감소 체크 : "+y);
+        //Debug.Log("줄 감소 체크 : "+y);
         bool transCheck = false;
         if (y == mapSize[1]) {
             return;
@@ -147,10 +145,8 @@ public class TetrisManager : MonoBehaviour
             if ((dataMatrix[(int)v.x, (int)v.y - 1] != null && dataMatrix[(int)v.x, (int)v.y - 1].name != child.name) || (int)v.y <= 1)
             {
                 endOfMove = true;
-            }
-           // Debug.Log("now Check :" + v.x + "," + v.y);
-        }
-       // Debug.Log("-----------");
+            }           
+        }       
     }
 
 

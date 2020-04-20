@@ -97,11 +97,6 @@ public class Tetrimino : MonoBehaviour
 
     public void TurnTetrimino()
     {
-        /*
-        for (int i = 0; i < 4; i++) {            
-            tetriminoGroup[i].transform.position = new Vector2(tetriminoGroup[i].transform.position.y, -tetriminoGroup[i].transform.position.x);
-        }
-        */
         transform.Rotate(0, 0, -90);
         if (TetrisManager.IsValidGridPos(transform) == false) {
             transform.Rotate(0, 0, 180);
