@@ -40,6 +40,7 @@ public class Tetrimino : MonoBehaviour
     public void CanMove() {
         StartCoroutine(MoveDownTetrimino());
     }
+
     public void StopMove()
     {
         Debug.Log("stop");
@@ -119,7 +120,10 @@ public class Tetrimino : MonoBehaviour
     }
     //아래 이동
     public void PushToBottom() {
+        //외부에서 아래 키 입력이 들어갔을때.
+        StopAllCoroutines();
         transform.position += new Vector3(0,(-1 * batchGap), 0);
+        StartCoroutine(MoveDownTetrimino());
     }
 
     private TetriminoType RandomSelect(int selectKey)

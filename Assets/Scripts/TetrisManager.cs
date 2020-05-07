@@ -17,7 +17,7 @@ public class TetrisManager : MonoBehaviour
     [Range(0.0f, 1.0f)]
     [SerializeField] private float batchGap = 0.7f;
     [SerializeField] private static int[] mapSize = { 9, 20 };
-    [SerializeField] private int[] batchPosition = { 5, 15 };
+    [SerializeField] private int[] batchPosition = { 4, 15 };
 
     [Header("조작 컨트롤러")]
     [SerializeField] private TetrisController tetrisController = null;
@@ -29,7 +29,7 @@ public class TetrisManager : MonoBehaviour
         dataMatrix = new Transform[mapSize[0], mapSize[1]];
         //nowPosArray = new int[4, 2];
 
-        nowTetrimino = Instantiate(baseTetrimino, new Vector2(0, 15), transform.rotation);
+        nowTetrimino = Instantiate(baseTetrimino, new Vector2(batchPosition[0], batchPosition[1]), transform.rotation);
         //nextTetrimino = Instantiate(baseTetrimino, new Vector2(5, 16), transform.rotation);
         //secondTetrimino = Instantiate(baseTetrimino, new Vector2(5, 2), transform.rotation);
 
@@ -44,7 +44,7 @@ public class TetrisManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (endOfMove == true) { //현재 테트리미노가 사용불가가 되었을시
+        if (endOfMove == true && playState == true) { //현재 테트리미노가 사용불가가 되었을시
             Debug.Log("Next");
             foreach (Transform child in nowTetrimino.transform)
             {
@@ -52,11 +52,11 @@ public class TetrisManager : MonoBehaviour
                 dataMatrix[(int)v.x, (int)v.y].name = "Rock";
                 playState = CheckOverflow(v) == false;
             }
-
                 nowTetrimino.GetComponent<Tetrimino>().StopMove();
+
             if (playState == true)
             {
-                nowTetrimino = nextTetrimino = Instantiate(baseTetrimino, new Vector2(0, 15), transform.rotation);
+                nowTetrimino = nextTetrimino = Instantiate(baseTetrimino, new Vector2(batchPosition[0], batchPosition[1]), transform.rotation);
                 nowTetrimino.GetComponent<Tetrimino>().Initializer(batchGap);
 
                 //nowTetrimino = nextTetrimino;
@@ -70,6 +70,10 @@ public class TetrisManager : MonoBehaviour
                 nowTetrimino.GetComponent<Tetrimino>().CanMove();
 
                 endOfMove = false;
+            }
+            else {
+                Debug.Log("GameOver");
+                tetrisController.Tetrimino = null;
             }
 
             while (DelectRowChecker() == true)
